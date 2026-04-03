@@ -2,8 +2,9 @@
 node_modules/
 package-lock.json
 
-# build output
-dist/
+# build output (except for gh-pages)
+# .gitkeep
+
 .vite/
 
 # IDE
