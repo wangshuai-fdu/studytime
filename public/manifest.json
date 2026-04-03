@@ -1,0 +1,18 @@
+{
+  "name": "我爱学习 - 番茄钟",
+  "short_name": "番茄钟",
+  "description": "专注计时工具",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f0f0",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

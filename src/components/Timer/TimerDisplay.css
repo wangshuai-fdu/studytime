@@ -1,0 +1,53 @@
+.timer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.timer-icon {
+  font-size: 64px;
+}
+
+.timer-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.timer-circle {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+
+.timer-surface {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.timer-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.timer-time {
+  font-size: 72px;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-progress {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+}
