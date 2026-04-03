@@ -1,0 +1,53 @@
+.timer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.timer-title {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.timer-circle {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 0 auto 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-surface {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-text {
+  text-align: center;
+}
+
+.timer-time {
+  font-size: 64px;
+  font-weight: 600;
+  color: #333;
+  letter-spacing: 2px;
+}
+
+.timer-progress {
+  font-size: 14px;
+  color: #999;
+  margin-top: 8px;
+}
