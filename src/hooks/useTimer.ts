@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTimerStore } from '../stores/timerStore';
+import { playBeep } from '../utils/beep';
 
 export function useTimer() {
   const {
@@ -11,69 +12,19 @@ export function useTimer() {
     enableSound,
     setRunning,
     setTimer,
+    resetTimer,
     addRecord,
   } = useTimerStore();
 
-  const audioContextRef = useRef<AudioContext | null>(null);
   const settingsRef = useRef(settings);
   const currentModeRef = useRef(currentMode);
-  const enableSoundRef = useRef(enableSound);
   const addRecordRef = useRef(addRecord);
 
   useEffect(() => {
     settingsRef.current = settings;
     currentModeRef.current = currentMode;
-    enableSoundRef.current = enableSound;
     addRecordRef.current = addRecord;
-  }, [settings, currentMode, enableSound, addRecord]);
-
-  const playBeep = useCallback(() => {
-    if (!enableSoundRef.current) return;
-
-    try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
-      }
-
-      const ctx = audioContextRef.current;
-      const now = ctx.currentTime;
-
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.frequency.setValueAtTime(800, now);
-      osc1.type = 'sine';
-      gain1.gain.setValueAtTime(0.3, now);
-      gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
-      osc1.start(now);
-      osc1.stop(now + 0.5);
-
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.frequency.setValueAtTime(1000, now + 0.6);
-      osc2.type = 'sine';
-      gain2.gain.setValueAtTime(0.3, now + 0.6);
-      gain2.gain.exponentialRampToValueAtTime(0.01, now + 1.1);
-      osc2.start(now + 0.6);
-      osc2.stop(now + 1.1);
-
-      const osc3 = ctx.createOscillator();
-      const gain3 = ctx.createGain();
-      osc3.connect(gain3);
-      gain3.connect(ctx.destination);
-      osc3.frequency.setValueAtTime(1200, now + 1.2);
-      osc3.type = 'sine';
-      gain3.gain.setValueAtTime(0.3, now + 1.2);
-      gain3.gain.exponentialRampToValueAtTime(0.01, now + 1.7);
-      osc3.start(now + 1.2);
-      osc3.stop(now + 1.7);
-    } catch (e) {
-      console.error('播放声音失败:', e);
-    }
-  }, []);
+  }, [settings, currentMode, addRecord]);
 
   const triggerNotification = useCallback(() => {
     const titles = {
@@ -110,7 +61,7 @@ export function useTimer() {
       if (elapsed <= 0) {
         clearInterval(interval);
         setRunning(false);
-        playBeep();
+        if (enableSound) playBeep();
         triggerNotification();
         const currentModeVal = currentModeRef.current;
         const settingsVal = settingsRef.current;
@@ -125,13 +76,14 @@ export function useTimer() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, remainingTime, totalTime, setRunning, setTimer, playBeep, triggerNotification]);
+  }, [isRunning, remainingTime, totalTime, setRunning, setTimer, enableSound, triggerNotification]);
 
   return {
     isRunning,
     displayTime: formatTime(remainingTime),
     progress,
     setRunning,
+    resetTimer,
     playBeep,
   };
 }

@@ -1,5 +1,5 @@
-import './DayDetailModal.css';
 import type { TimerRecord } from '../../types';
+import './DayDetailModal.css';
 
 interface DayDetailModalProps {
   dateKey: string;
@@ -21,75 +21,53 @@ export default function DayDetailModal({ dateKey, records, onClose }: DayDetailM
 
   const formatDate = (dateKey: string) => {
     const [year, month, day] = dateKey.split('-');
-    return `${year}-${month}-${day}`;
-  };
-
-  const close = () => {
-    onClose();
+    return `${year}年${parseInt(month)}月${parseInt(day)}日`;
   };
 
   return (
-    <div className="modal-overlay active" onClick={close}>
+    <div className="modal-overlay active" onClick={onClose}>
       <div className="modal day-detail-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <div className="modal-title">
-            <span>📅</span>
-            <span>{formatDate(dateKey)}详情</span>
-          </div>
-          <span className="close-btn" onClick={close}>×</span>
+        <div className="modal-title-row">
+          <span className="modal-icon">📅</span>
+          <h3>{formatDate(dateKey)}</h3>
+          <button className="modal-close" onClick={onClose}>×</button>
         </div>
 
-        <div className="modal-body">
-          <div className="detail-stats">
-            <div className="stat-item study">
-              <span className="stat-icon">🍅</span>
-              <div>
-                <div className="stat-value">{studyRecords.length} 次</div>
-                <div className="stat-label">学习计时</div>
-              </div>
-            </div>
-
-            <div className="stat-item break short">
-              <span className="stat-icon">☕</span>
-              <div>
-                <div className="stat-value format-time">{formatTime(totalShortTime)}</div>
-                <div className="stat-label">短休息</div>
-              </div>
-            </div>
-
-            <div className="stat-item break long">
-              <span className="stat-icon">🌴</span>
-              <div>
-                <div className="stat-value format-time">{formatTime(totalLongTime)}</div>
-                <div className="stat-label">长休息</div>
-              </div>
-            </div>
+        <div className="day-stats-row">
+          <div className="day-stat study-stat">
+            <div className="day-stat-icon">🍅</div>
+            <div className="day-stat-value">{studyRecords.length}</div>
+            <div className="day-stat-label">次</div>
           </div>
-
-          <div className="divider">
-            <span className="divider-line"></span>
-            <span className="divider-text">详细记录</span>
-            <span className="divider-line"></span>
+          <div className="day-stat break-stat">
+            <div className="day-stat-icon">☕</div>
+            <div className="day-stat-value">{formatTime(totalShortTime)}</div>
+            <div className="day-stat-label">短休息</div>
           </div>
-
-          <div className="record-list">
-            {studyRecords.length === 0 ? (
-              <div className="empty-state">今天还没有学习记录</div>
-            ) : (
-              studyRecords.map((record, i) => (
-                <div className="record-item" key={i}>
-                  <span className="record-icon">🍅</span>
-                  <span className="record-time">{record.time}</span>
-                  <span className="record-duration">{record.duration}分钟</span>
-                </div>
-              ))
-            )}
+          <div className="day-stat long-stat">
+            <div className="day-stat-icon">🌴</div>
+            <div className="day-stat-value">{formatTime(totalLongTime)}</div>
+            <div className="day-stat-label">长休息</div>
           </div>
         </div>
 
-        <div className="modal-actions">
-          <button className="btn" onClick={close}>关闭</button>
+        <div className="day-records-title">详细记录</div>
+
+        <div>
+          {studyRecords.length === 0 ? (
+            <div className="empty-day-state">今天还没有学习记录</div>
+          ) : (
+            studyRecords.map((record, i) => (
+              <div className="day-record-item" key={i}>
+                <span className="day-record-icon">🍅</span>
+                <span className="day-record-time">{record.time}</span>
+                <span className="day-record-duration">{record.duration}min</span>
+              </div>
+            ))
+          )}
         </div>
+
+        <button className="modal-close-btn" onClick={onClose}>关闭</button>
       </div>
     </div>
   );
